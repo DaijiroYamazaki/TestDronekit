@@ -72,6 +72,9 @@ while True:
 vehicle.mode = VehicleMode("CIRCLE")
 vehicle.wait_for_mode("CIRCLE")
 print("円周飛行開始")
+
+# RC3：スロットルをニュートラルにする
+# @todo 実機でRCを使う場合はこの行を削除すること
 vehicle.channels.overrides = {'3':1500}
 
 # HPからの距離を監視するコールバック追加
