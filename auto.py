@@ -34,10 +34,11 @@ for cmd in cmds:
 for cmd in missionList:
     if cmd.command == 20:
         isExistRTL=1
-        break
+    else:
+        isExistRTL=0
     # print("コマンド", cmd)
 
-# RTLが含まれていない場合は強制終了
+# フライトプランの最後がRTLでなければ強制終了
 if isExistRTL==0:
     print("フライトプランの最後に RETURN_TO_LAUNCH を追加してください")
     exit()
