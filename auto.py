@@ -53,7 +53,6 @@ while not vehicle.is_armable:
     time.sleep(1)
 
 # ARM実行
-vehicle.armed = True
 vehicle.arm()
 
 # 離陸→目標高度まで上昇開始
