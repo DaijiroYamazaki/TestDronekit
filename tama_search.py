@@ -38,7 +38,13 @@ def altitude_callback(self, attr_name, value):
     # print("高度:", value.alt)
 
 # 機体に接続する
-vehicle = connect('tcp:127.0.0.1:5762', wait_ready=True, timeout=60)
+test_vehicle = { 
+    connect('tcp:127.0.0.1:5762', wait_ready=True, timeout=60),
+    connect('tcp:127.0.0.1:5772', wait_ready=True, timeout=60),
+    connect('tcp:127.0.0.1:5782', wait_ready=True, timeout=60),
+    connect('tcp:127.0.0.1:5792', wait_ready=True, timeout=60),
+    connect('tcp:127.0.0.1:5802', wait_ready=True, timeout=60)
+}
 
 def get_location_metres(original_location, dNorth, dEast):
     """
@@ -85,6 +91,18 @@ def get_distance_metres(aLocation1, aLocation2):
     return math.sqrt((dlat*dlat) + (dlong*dlong)) * 1.113195e5
 
 
+target_location = LocationGlobal(lat=35.806627, lon=139.08252)
+
+# 直近の機体を検索する
+shortest = 999999
+for v in test_vehicle:
+    distance = get_distance_metres(v.location.global_frame, target_location)
+    if distance < shortest:
+        shortest = distance
+        vehicle = v
+
+print("vehicle_pos: ", vehicle.location.global_frame)
+
 def goto(dNorth, dEast, gotoFunction=vehicle.simple_goto):
     """
     Moves the vehicle to a position dNorth metres North and dEast metres East of the current position.
@@ -112,44 +130,6 @@ def goto(dNorth, dEast, gotoFunction=vehicle.simple_goto):
             print("Reached target")
             break
         time.sleep(2)
-
-
-
-
-vehicle[0] = connect('tcp:143.189.114.165:5862', wait_ready=True, timeout=60)
-vehicle[1] = connect('tcp:143.189.114.165:5872', wait_ready=True, timeout=60)
-vehicle[2] = connect('tcp:143.189.114.165:5882', wait_ready=True, timeout=60)
-vehicle[3] = connect('tcp:143.189.114.165:5892', wait_ready=True, timeout=60)
-vehicle[4] = connect('tcp:143.189.114.165:5902', wait_ready=True, timeout=60)
-
-target_location = LocationGlobal (lat=35.806627, lon=139.08252)
-
-distance1 = get_distance_metres(vehicle[0].location, target_location)
-distance2 = get_distance_metres(vehicle[1].location, target_location)
-distance3 = get_distance_metres(vehicle[2].location, target_location)
-distance4 = get_distance_metres(vehicle[3].location, target_location)
-distance5 = get_distance_metres(vehicle[4].location, target_location)
-
-bestVehicle = vehicle[0]
-shortest = distance1
-
-if distance2 < shortest:
-    shortest = distance2
-    bestVehicle = vehicle[1]
-
-if distance3 < shortest:
-    shortest = distance3
-    bestVehicle = vehicle[2]
-
-if distance4 < shortest:
-    shortest = distance4
-    bestVehicle = vehicle[3]
-
-if distance5 < shortest:
-    shortest = distance5
-    bestVehicle = vehicle[4]
-
-vehicle = bestVehicle
 
 # ARM可能か確認する
 while not vehicle.is_armable:
