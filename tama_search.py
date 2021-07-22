@@ -147,7 +147,7 @@ while not vehicle.is_armable:
 vehicle.arm()
 
 # 飛行開始時刻記録
-start_time = time.localtime()
+start_time = time.clock_gettime(0)
 
 # テイクオフ実行
 print("テイクオフ！")
@@ -227,7 +227,8 @@ vehicle.disarm(wait=True, timeout=None)
 print("ミッション終了")
 
 # 帰還時刻記録
-finish_time = time.localtime()
+finish_time = time.clock_gettime(0)
 
 # 飛行時間報告
-print("飛行時間", time.strftime("%H:%M:%S", finish_time - start_time))
+flight_time = finish_time - start_time
+print("飛行時間:", flight_time)
