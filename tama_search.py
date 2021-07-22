@@ -76,7 +76,7 @@ vehicle.mode = VehicleMode("GUIDED")
 vehicle.wait_for_mode("GUIDED")
 
 return_pos = vehicle.location.global_frame
-return_pos.alt = 20
+return_pos.alt = targetAltitude
 
 # ARM可能か確認する
 while not vehicle.is_armable:
